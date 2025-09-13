@@ -8,7 +8,7 @@ lazy val root = project
 
     scalaVersion := scala3Version,
 
-    libraryDependencies += "dev.zio" %% "zio-http"     % "3.5.0",
+    libraryDependencies += "dev.zio" %% "zio-http"     % "3.5.1",
     libraryDependencies += "org.scalameta" %% "munit" % "1.0.0" % Test
     /* astro kedvéért */ , libraryDependencies += "com.kosherjava" % "zmanim" % "2.5.0"
     , libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "2.4.0"

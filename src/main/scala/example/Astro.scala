@@ -1,5 +1,6 @@
-//> using dep "dev.zio::zio-http:3.5.0"
+//> using dep "dev.zio::zio-http:3.5.1"
 //> using file ../astro/O.scala
+//> using file ../astro/Util.scala
 
 package example
 
