@@ -8,6 +8,7 @@ import zio.http._
 import zio.http.template._
 import scala.util.chaining._  //pipe, tap
 import astro.O
+import astro.Util
 
 // Copilot (GPT-5 mini) súgta
 object RequestSyntax {
@@ -38,12 +39,18 @@ object Astro extends ZIOAppDefault
     */
   def betetParam (b:Body): Map[String, Seq[String]] =
   {
-    /**/ println(b)
-    /**/ println(b.asURLEncodedForm)
-    /**/ println(b.asString)
-    /* */ b.asString.map(println(_))//.orElseSucceed  // a .map a Success(valami)-ből valami-t csinál
+    //**/ println(b)
+    //**/ println(b.asURLEncodedForm)
+    var bStr = ""
+    b.asString.map( s => bStr = s )
+      // Succeed("tzid=Europe%2FBudapest&...")
+       //.orElseSucceed("")
+    /**/ println(bStr)
+    //* */ b.asString.map(println(_)) // "tzid=Europe%2FBudapest&..."  // a .map a Succeed(valami)-ből valami-t csinál
+    //**/    .orElseSucceed(Map("" -> Seq("")))  // ...vagy hibát, és akkor ezt adja
     /**/ println("---")
-    /* */b.asURLEncodedForm.map( f => println(f.toQueryParams) )
+    //* */b.asURLEncodedForm.map( f => println(f.toQueryParams) )
+    /**/ println(parseQueryString(bStr).getOrElse("tzid", Seq("nincs"))(0))
 
     Map("" -> Seq(""))
   }

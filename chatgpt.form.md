@@ -965,3 +965,59 @@ val bodyParams: ZIO[Any, Throwable, Map[String, List[String]]] =
 👉 Would you like me to extend `UrlEncodedUtil` so it also **handles file uploads** (`FormField.Binary`), or should it stay strictly `Map[String, List[String]]` for text fields only?
 ---
 ---
+How can I make a Map[String, List[String]] or a Map[String, Seq[String]] out of a string in url-encoded format in Scala?
+---
+Got it — you want to take a URL-encoded query string like:
+
+```
+foo=1&foo=2&bar=3
+```
+
+and turn it into something like:
+
+```scala
+Map("foo" -> List("1", "2"), "bar" -> List("3"))
+```
+
+in Scala.
+
+Here’s a clean way to do it using the standard library:
+
+```scala
+import java.net.URLDecoder
+import scala.collection.immutable.{Map, Seq}
+
+// Function to parse URL query string into Map[String, Seq[String]]
+def parseQueryString(qs: String, charset: String = "UTF-8"): Map[String, Seq[String]] = {
+  qs
+    .split("&")
+    .filter(_.nonEmpty)
+    .map { pair =>
+      val Array(key, value) = pair.split("=", 2) ++ Array("")
+      URLDecoder.decode(key, charset) -> URLDecoder.decode(value, charset)
+    }
+    .groupBy(_._1)
+    .view
+    .mapValues(_.map(_._2).toSeq)
+    .toMap
+}
+
+// Example:
+val qs = "foo=1&foo=2&bar=3"
+val result = parseQueryString(qs)
+// result: Map(foo -> List(1, 2), bar -> List(3))
+```
+
+### Explanation:
+
+1. Split on `&` → get each key/value pair.
+2. For each pair, split on `=`, making sure to handle missing values (`a=` should still give `a -> ""`).
+3. Decode both key and value using `URLDecoder.decode`.
+4. Group by key and collect values into a `Seq`.
+
+This gives you a `Map[String, Seq[String]]`.
+If you specifically want `List[String]`, just replace `.toSeq` with `.toList`.
+
+---
+
+👉 Question for you: do you want this to handle **edge cases** like missing values (`foo=`), keys with no `=`, or repeated `&`? I can extend the parser to handle those if needed.

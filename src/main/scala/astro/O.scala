@@ -19,7 +19,7 @@ object O
       <body>
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer="defer"></script>
         <script src="https://unpkg.com/htmx.org@1.5.0"></script>
-        <form hx-post="betet" hx-target="#valasz"
+        <form hx-post="betettt" hx-target="#valasz"
               x-data="{ma: new Date(), tolN: 0, igN: 0, tol: 't', ig: 'i'}"
               x-init="tolN=ma.setHours(0,0,0,0); tol=ma.toLocaleString('sv'); ig=tol; igN=tolN"
         >
