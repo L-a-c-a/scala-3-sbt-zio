@@ -21,6 +21,8 @@ object Util
       .toMap
     }
 
+  // minden paraméterből csak egy lehet (nem is kell több), minden Seq egytagú
+  // csak a %2F-et és a %3A-t dekódolja
   def parseQueryString(qs: String, charset: String = "UTF-8"): Map[String, Seq[String]] = 
     { qs
       .split("&|=")
